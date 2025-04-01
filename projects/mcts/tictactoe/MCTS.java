@@ -4,7 +4,7 @@
 
 package projects.mcts.tictactoe;
 
-import com.phasmidsoftware.dsaipg.projects.mcts.core.Node;
+import projects.mcts.core.Node;
 
 /**
  * Class to represent a Monte Carlo Tree Search for TicTacToe.
