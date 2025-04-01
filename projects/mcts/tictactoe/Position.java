@@ -2,7 +2,8 @@
  * Copyright (c) 2024. Robin Hillyard
  */
 
-package com.phasmidsoftware.dsaipg.projects.mcts.tictactoe;
+package projects.mcts.tictactoe;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,9 +65,8 @@ public class Position {
         if (player == last) throw new RuntimeException("consecutive moves by same player: " + player);
         int[][] matrix = copyGrid();
         if (matrix[x][y] < 0) {
-            // TO BE IMPLEMENTED 
-             return null;
-            // END SOLUTION
+            matrix[x][y] = player;
+            return new Position(matrix, count + 1, player);
         }
         throw new RuntimeException("Position is occupied: " + x + ", " + y);
     }
@@ -82,9 +82,7 @@ public class Position {
         for (int i = 0; i < gridSize; i++)
             for (int j = 0; j < gridSize; j++)
                 if (grid[i][j] < 0)
-                    // TO BE IMPLEMENTED 
-         ;
-        // END SOLUTION
+                    result.add(new int[]{i, j}); 
         return result;
     }
 
@@ -144,9 +142,17 @@ public class Position {
      * @return true if there are three cells in a line that are the same and equal to the last player.
      */
     boolean threeInARow() {
-        // TO BE IMPLEMENTED 
-         return false;
-        // END SOLUTION
+        for (int i = 0; i < gridSize; i++) {
+            if (Arrays.equals(projectRow(i), xxx)) return true;
+        }
+        for (int j = 0; j < gridSize; j++) {
+            if (Arrays.equals(projectCol(j), xxx)) return true;
+        }
+    
+        if (Arrays.equals(projectDiag(true), xxx)) return true;
+        if (Arrays.equals(projectDiag(false), xxx)) return true;
+
+        return false;
     }
 
     /**
