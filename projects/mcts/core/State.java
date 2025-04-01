@@ -2,7 +2,7 @@
  * Copyright (c) 2024. Robin Hillyard
  */
 
-package com.phasmidsoftware.dsaipg.projects.mcts.core;
+package projects.mcts.tictactoe;
 
 import com.phasmidsoftware.dsaipg.adt.bqs.UnorderedIterator;
 
