@@ -2,7 +2,7 @@
  * Copyright (c) 2024. Robin Hillyard
  */
 
-package com.phasmidsoftware.dsaipg.projects.mcts.core;
+package projects.mcts.tictactoe;
 
 /**
  * This interface describes the behavior of a Game for the purpose of testing the Monte Carlo Tree Search utilities.
