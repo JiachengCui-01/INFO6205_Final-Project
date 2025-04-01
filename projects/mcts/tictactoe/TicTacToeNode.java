@@ -4,8 +4,8 @@
 
 package projects.mcts.tictactoe;
 
-import com.phasmidsoftware.dsaipg.projects.mcts.core.Node;
-import com.phasmidsoftware.dsaipg.projects.mcts.core.State;
+import projects.mcts.core.Node;
+import projects.mcts.core.State;
 
 import java.util.ArrayList;
 import java.util.Collection;
