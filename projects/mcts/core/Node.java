@@ -2,7 +2,7 @@
  * Copyright (c) 2024. Robin Hillyard
  */
 
-package projects.mcts.tictactoe;
+package projects.mcts.core;
 
 import java.util.Collection;
 import java.util.Iterator;
