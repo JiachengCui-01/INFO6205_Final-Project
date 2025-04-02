@@ -2,7 +2,7 @@
  * Copyright (c) 2024. Robin Hillyard
  */
 
-package projects.mcts.tictactoe;
+package projects.mcts.core;
 
 /**
  * This interface describes the behavior of a Game for the purpose of testing the Monte Carlo Tree Search utilities.

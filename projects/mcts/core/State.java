@@ -2,9 +2,9 @@
  * Copyright (c) 2024. Robin Hillyard
  */
 
-package projects.mcts.tictactoe;
+package projects.mcts.core;
 
-import com.phasmidsoftware.dsaipg.adt.bqs.UnorderedIterator;
+import projects.mcts.adt.bqs.UnorderedIterator;
 
 import java.util.Collection;
 import java.util.Iterator;
