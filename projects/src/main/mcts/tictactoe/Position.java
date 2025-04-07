@@ -219,15 +219,7 @@ public class Position {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                sb.append(grid[i][j]);
-                if (j < gridSize - 1) sb.append(',');
-            }
-            if (i < gridSize - 1) sb.append('\n');
-        }
-        return sb.toString();
+        return render();
     }
 
     @Override
