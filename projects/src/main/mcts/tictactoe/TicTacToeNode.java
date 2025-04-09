@@ -7,17 +7,41 @@ package mcts.tictactoe;
 import mcts.core.Node;
 import mcts.core.State;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 
 public class TicTacToeNode implements Node<TicTacToe> {
+
+    private final State<TicTacToe> state;
+    private final ArrayList<Node<TicTacToe>> children;
+    private final Node<TicTacToe> parent;
+
+    private int wins;
+    private int playouts;
+
+    public TicTacToeNode(State<TicTacToe> state) {
+        this(state, null);
+    }
+
+    public TicTacToeNode(State<TicTacToe> state, Node<TicTacToe> parent) {
+        this.state = state;
+        this.parent = parent;
+        this.children = new ArrayList<>();
+        initializeNodeData();
+    }
+
+    private void initializeNodeData() {
+        if (isLeaf()) {
+            playouts = 1;
+            Optional<Integer> winner = state.winner();
+            wins = winner.isPresent() ? 2 : 1; // win: 2, draw: 1
+        }
+    }
 
     /**
      * @return true if this node is a leaf node (in which case no further exploration is possible).
      */
     public boolean isLeaf() {
-        return state().isTerminal();
+        return state.isTerminal();
     }
 
     /**
@@ -51,7 +75,11 @@ public class TicTacToeNode implements Node<TicTacToe> {
      * @param state the State for the new chile.
      */
     public void addChild(State<TicTacToe> state) {
-        children.add(new TicTacToeNode(state));
+        children.add(new TicTacToeNode(state, this));
+    }
+
+    public Node<TicTacToe> getParent() {
+        return parent;
     }
 
     /**
@@ -80,26 +108,14 @@ public class TicTacToeNode implements Node<TicTacToe> {
         return playouts;
     }
 
-    public TicTacToeNode(State<TicTacToe> state) {
-        this.state = state;
-        children = new ArrayList<>();
-        initializeNodeData();
+    public Node<TicTacToe> bestChildByUCT(double c) {
+        return children.stream()
+                .max(Comparator.comparing(child -> {
+                    int childPlayouts = child.playouts();
+                    if (childPlayouts == 0) return Double.POSITIVE_INFINITY;
+                    double winRate = (double) child.wins() / childPlayouts;
+                    return winRate + c * Math.sqrt(Math.log(this.playouts()) / childPlayouts);
+                }))
+                .orElseThrow();
     }
-
-    private void initializeNodeData() {
-        if (isLeaf()) {
-            playouts = 1;
-            Optional<Integer> winner = state.winner();
-            if (winner.isPresent())
-                wins = 2; // CONSIDER check that the winner is the correct player. We shouldn't need to.
-            else
-                wins = 1; // a draw.
-        }
-    }
-
-    private final State<TicTacToe> state;
-    private final ArrayList<Node<TicTacToe>> children;
-
-    private int wins;
-    private int playouts;
 }
