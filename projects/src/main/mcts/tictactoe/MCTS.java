@@ -106,16 +106,47 @@ public class MCTS {
         }
     }
 
-
+    // Using roll out strategy
     private int simulate(Node<TicTacToe> node) {
         State<TicTacToe> sim = node.state();
+
         while (!sim.isTerminal()) {
-            Collection<? extends mcts.core.Move<TicTacToe>> moves = sim.moves(sim.player());
-            mcts.core.Move<TicTacToe> move = moves.iterator().next(); // 随机模拟
-            sim = sim.next(move);
+            int currentPlayer = sim.player();
+            Collection<? extends Move<TicTacToe>> moves = sim.moves(currentPlayer);
+            List<Move<TicTacToe>> moveList = new ArrayList<>(moves);
+
+            boolean moved = false;
+
+            for (Move<TicTacToe> move : moveList) {
+                State<TicTacToe> next = sim.next(move);
+                if (next.winner().orElse(-1) == currentPlayer) {
+                    sim = next;
+                    moved = true;
+                    break;
+                }
+            }
+
+            if (moved) continue;
+
+            int opponent = 1 - currentPlayer;
+            for (Move<TicTacToe> move : moveList) {
+                State<TicTacToe> next = sim.next(move);
+                if (next.winner().orElse(-1) == opponent) {
+                    sim = next;
+                    moved = true;
+                    break;
+                }
+            }
+
+            if (moved) continue;
+
+            Move<TicTacToe> chosen = moveList.get(new Random().nextInt(moveList.size()));
+            sim = sim.next(chosen);
         }
-        return sim.winner().orElse(-1);
+
+        return sim.winner().orElse(-1); 
     }
+
 
     private void backpropagate(Node<TicTacToe> node, int result) {
         while (node != null) {
