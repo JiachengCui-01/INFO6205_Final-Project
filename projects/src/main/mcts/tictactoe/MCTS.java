@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024. Robin Hillyard
+ */
+
 package mcts.tictactoe;
 
 import mcts.core.Node;
@@ -5,6 +9,9 @@ import mcts.core.State;
 
 import java.util.*;
 
+/**
+ * Class to represent a Monte Carlo Tree Search for TicTacToe.
+ */
 public class MCTS {
 
     private static final int SIMULATIONS = 1000;
