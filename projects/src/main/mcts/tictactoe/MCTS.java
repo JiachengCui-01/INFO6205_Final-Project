@@ -6,6 +6,7 @@ package mcts.tictactoe;
 
 import mcts.core.Node;
 import mcts.core.State;
+import mcts.core.Move;
 
 import java.util.*;
 
@@ -14,7 +15,7 @@ import java.util.*;
  */
 public class MCTS {
 
-    private static final int SIMULATIONS = 1000;
+    private static final int SIMULATIONS = 10000;
     private static final double EXPLORATION = Math.sqrt(2);
 
     private final Node<TicTacToe> root;
@@ -24,19 +25,58 @@ public class MCTS {
     }
 
     public static void main(String[] args) {
-        // initialize game
+        Scanner scanner = new Scanner(System.in);
         TicTacToe game = new TicTacToe();
-        State<TicTacToe> initialState = game.start();
-        Node<TicTacToe> root = new TicTacToeNode(initialState);
+        State<TicTacToe> state = game.start();
+        int currentPlayer = game.opener(); // AI goes first (X)
 
-        MCTS mcts = new MCTS(root);
+        while (!state.isTerminal()) {
+            System.out.println("\nCurrent board:");
+            System.out.println(state);
 
-        mcts.runSearch();
+            if (currentPlayer == TicTacToe.O) {
+                // input (matching the habit of normal user)
+                System.out.print("Your move (format: row col (from 1 to 3)): ");
+                int row = scanner.nextInt() - 1;
+                int col = scanner.nextInt() - 1;
 
-        // print out the best move
-        Node<TicTacToe> best = mcts.bestChild();
-        System.out.println("MCTS advising the best next move is：");
-        System.out.println(best.state());
+                boolean valid = false;
+                for (Move<TicTacToe> move : state.moves(currentPlayer)) {
+                    TicTacToe.TicTacToeMove m = (TicTacToe.TicTacToeMove) move;
+                    int[] pos = m.move();
+                    if (pos[0] == row && pos[1] == col) {
+                        state = state.next(m);
+                        valid = true;
+                        break;
+                    }
+                }
+                if (!valid) {
+                    System.out.println("Invalid move. Try again.");
+                    continue;
+                }
+            } else {
+                // AI using MCTS
+                System.out.println("AI is thinking...");
+                Node<TicTacToe> root = new TicTacToeNode(state);
+                MCTS mcts = new MCTS(root);
+                mcts.runSearch();
+                state = mcts.bestChild().state();
+            }
+
+            currentPlayer = 1 - currentPlayer; // Player switch
+        }
+
+        // print out all matchups
+        System.out.println("\nFinal board:");
+        System.out.println(state);
+        Optional<Integer> winner = state.winner();
+        if (winner.isPresent()) {
+            System.out.println("Winner is: " + (winner.get() == TicTacToe.X ? "AI (X)" : "You (O)"));
+        } else {
+            System.out.println("It's a draw!");
+        }
+
+        scanner.close();
     }
 
     public void runSearch() {
