@@ -1,3 +1,11 @@
+### April 15th Jiacheng Cui update
+
+Implemented a graphical user interface (GUI) for the TicTacToe game using Java Swing.
+
+The interface enables a human player (X) to play against an AI player (O) that uses Monte Carlo Tree Search (MCTS) for move decision-making.
+
+
+
 ### April 9th WenboJin update
 
 Implemented MCTS in MCTS.java (and main() method)
