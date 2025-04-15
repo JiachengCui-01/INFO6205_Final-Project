@@ -2,8 +2,6 @@ package mcts.core;
 
 import org.junit.Test;
 
-import core.RandomState;
-
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
