@@ -271,6 +271,11 @@ public class Position {
         matrix[i2][j2] = temp;
     }
 
+    public int[][] getGrid() {
+        return copyGrid();
+    }
+    
+
     private final int[][] grid;
     final int last;
     private final int count;
