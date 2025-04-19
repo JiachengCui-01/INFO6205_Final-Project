@@ -1,3 +1,14 @@
+### April 18th Jiacheng Cui update
+
+Implemented our own game - a merge game named 2048. I also created some unit tests.
+
+You can start the game by running **`MergeSimulator.java`** .
+
+However, the MCTS I used didn't get any improvement, and no UI was created.
+
+
+
+
 ### April 15th Jiacheng Cui update
 
 Implemented a graphical user interface (GUI) for the TicTacToe game using Java Swing.
