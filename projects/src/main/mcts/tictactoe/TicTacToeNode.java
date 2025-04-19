@@ -118,4 +118,19 @@ public class TicTacToeNode implements Node<TicTacToe> {
                 }))
                 .orElseThrow();
     }
+
+    @Override
+    public void expand() {
+        for (var move : state.moves(state.player())) {
+            State<TicTacToe> nextState = state.next(move);
+            children.add(new TicTacToeNode(nextState, this));
+        }
+    }
+
+    @Override
+    public boolean isExpanded() {
+        return !children.isEmpty();
+    }
+    
+
 }
