@@ -6,8 +6,7 @@ import mcts.tictactoe.Position;
 import mcts.tictactoe.TicTacToe;
 import mcts.tictactoe.TicTacToeNode;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TicTacToeNodeTest {
 
@@ -48,4 +47,12 @@ public class TicTacToeNodeTest {
     public void backPropagate() {
         // no tests yet
     }
+    @Test
+    public void testAddChild() {
+        TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState();
+        TicTacToeNode node = new TicTacToeNode(state);
+        node.expand();
+        assertFalse(node.children().isEmpty());
+    }
+
 }

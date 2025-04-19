@@ -219,4 +219,12 @@ public class MergeState implements State<MergeGame> {
             copy[i] = Arrays.copyOf(input[i], SIZE);
         return copy;
     }
+    public int getScore() {
+        return this.score;
+    }
+
+    public int[][] getGrid() {
+        return this.grid;
+    }
+
 }
