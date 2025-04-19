@@ -219,8 +219,18 @@ public class Position {
 
     @Override
     public String toString() {
-        return render();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                sb.append(grid[i][j]);
+                if (j < grid[i].length - 1) sb.append(",");
+            }
+            if (i < grid.length - 1) sb.append("\n");
+        }
+        return sb.toString();
     }
+    
+    
 
     @Override
     public boolean equals(Object o) {

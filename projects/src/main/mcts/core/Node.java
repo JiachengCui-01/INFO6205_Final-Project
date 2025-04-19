@@ -32,6 +32,10 @@ public interface Node<G extends Game<G>> {
      */
     boolean white();
 
+    void expand();  
+    boolean isExpanded();
+
+
     /**
      * Method to yield the children of this Node.
      *
