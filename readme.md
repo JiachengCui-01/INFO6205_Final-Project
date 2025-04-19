@@ -1,3 +1,9 @@
+### April 19th Ziyuan Yin update
+
+Add GUI to the 2048 game, can run proporly right now (run MergeGUI). 
+Added more test.
+
+
 ### April 18th Jiacheng Cui update
 
 Implemented our own game - a merge game named 2048. I also created some unit tests.
