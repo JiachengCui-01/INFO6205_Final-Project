@@ -35,6 +35,41 @@ public class MergeState implements State<MergeGame> {
         this.score = score;
     }
 
+    public Collection<MergeMove> getLegalMoves() {
+        Collection<Move<MergeGame>> moves = this.moves(this.player()); 
+        List<MergeMove> legalMoves = new ArrayList<>();
+    
+        for (Move<MergeGame> move : moves) {
+            if (move instanceof MergeMove) {
+                legalMoves.add((MergeMove) move);
+            }
+        }
+    
+        return legalMoves;
+    }
+
+    public int countEmpty() {
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == 0) count++;
+            }
+        }
+        return count;
+    }
+
+    public int getMaxTile() {
+        int max = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] > max) {
+                    max = grid[i][j];
+                }
+            }
+        }
+        return max;
+    }    
+    
     @Override
     public MergeGame game() {
         return game;
@@ -79,7 +114,7 @@ public class MergeState implements State<MergeGame> {
 
     @Override
     public Optional<Integer> winner() {
-        return Optional.empty(); // 2048 has no clear "winner"
+        return Optional.empty(); 
     }
 
     @Override
@@ -126,7 +161,7 @@ public class MergeState implements State<MergeGame> {
     
     private int applyMove(int[][] board, MergeMove.Direction dir) {
         boolean moved = false;
-        int[] scoreGain = new int[]{0}; // 记录本轮得分
+        int[] scoreGain = new int[]{0};
     
         for (int i = 0; i < SIZE; i++) {
             int[] line = extractLine(board, dir, i);
@@ -137,7 +172,7 @@ public class MergeState implements State<MergeGame> {
             writeLine(board, dir, i, merged);
         }
     
-        return moved ? scoreGain[0] : -1;  // ✅ 如果没移动，返回 -1 表示非法移动
+        return moved ? scoreGain[0] : -1;  
     }
 
     private int[] extractLine(int[][] board, MergeMove.Direction dir, int index) {
@@ -164,7 +199,6 @@ public class MergeState implements State<MergeGame> {
         }
     }
 
-    // 用于合并一行并累计得分
     private int[] mergeLine(int[] line, int[] scoreGain) {
         LinkedList<Integer> merged = new LinkedList<>();
         int i = 0;
@@ -174,8 +208,8 @@ public class MergeState implements State<MergeGame> {
                 int val = line[i];
                 if (i + 1 < SIZE && line[i] == line[i + 1]) {
                     val *= 2;
-                    scoreGain[0] += val; // ✅ 累加分数
-                    i++; // 跳过下一个格子
+                    scoreGain[0] += val; 
+                    i++;
                 }
                 merged.add(val);
             }
@@ -227,4 +261,17 @@ public class MergeState implements State<MergeGame> {
         return this.grid;
     }
 
+    public MergeMove getLastMoveTo(State<MergeGame> child) {
+        Collection<Move<MergeGame>> rawMoves = this.moves(this.player());
+    
+        for (Move<MergeGame> move : rawMoves) {
+            if (move instanceof MergeMove) {
+                State<MergeGame> next = this.next(move);
+                if (next.equals(child)) {
+                    return (MergeMove) move;
+                }
+            }
+        }
+        return null;
+    }
 }
