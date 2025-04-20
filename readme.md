@@ -1,3 +1,8 @@
+### April 20th Jiacheng Cui update
+Add some unit tests and Made some improvement to the MCTS in merge game.
+
+By running**`MergeSimulator.java`**, you can get results under different iterations. 
+
 ### April 19th Ziyuan Yin update
 
 Add GUI to the 2048 game, can run proporly right now (run MergeGUI). 
