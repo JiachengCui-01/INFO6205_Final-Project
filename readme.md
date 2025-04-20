@@ -1,3 +1,59 @@
+## Setup
+
+Clone the repository:
+
+```bash
+git clone https://github.com/JiachengCui-01/INFO6205_Final-Project.git
+```
+
+## Run the Games
+
+### Run TicTacToe with MCTS
+
+```bash
+\projects\src\main\mcts\tictactoe\TicTacToe.java
+```
+
+This will run a full self-play simulation using MCTS on TicTacToe.
+
+### Run Merge (2048) Game with MCTS
+
+```bash
+\projects\src\main\mcts\merge\MergeSimulator.java
+```
+
+This will run the Merge game using MCTS strategy and output statistics to the TERMINAL.(It needs a lot of time because it will run five different iterations at a same time and other Settings can increase running time)
+
+## Run Games with UI
+
+You can also manually play each game using the included graphical interfaces.
+
+### TicTacToe UI
+
+```bash
+\projects\src\main\mcts\tictactoe\TicTacToeGUI.java
+```
+
+
+### Merge (2048) UI
+
+```bash
+\projects\src\main\mcts\merge\MergeGUI.java
+```
+Players use directional keys to move blocks as a whole and combine blocks of equal value for fusion. The goal is to achieve the highest possible score by merging larger and larger tiles. Each merge can increase scores and the board complexity. The game ends when no more moves are available which means there is no empty space available and you can’t merge any tiles. 
+
+## Output File
+
+After running MergeSimulator, a file called `timing_merge.csv` will be generated. It includes:
+
+- Number of iterations used
+- Time spent in milliseconds
+- Final game score
+
+Use this file for visualization and analysis.
+
+---
+
 ### April 20th Jiacheng Cui update
 Add some unit tests and Made some improvement to the MCTS in merge game.
 
