@@ -32,4 +32,19 @@ public class MergeMove implements Move<MergeGame> {
     public String toString() {
         return "Move " + direction.name();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MergeMove that = (MergeMove) o;
+        return this.direction.equals(that.direction);
+    }
+
+    @Override
+    public int hashCode() {
+        return direction.hashCode();
+    }
+
 }

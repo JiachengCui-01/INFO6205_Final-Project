@@ -29,7 +29,7 @@ public class MCTS {
                 selected = bestUCTChild(selected);
             }
     
-            // ✅ Expansion
+            // Expansion
             if (!selected.state().isTerminal() && !selected.isExpanded()) {
                 selected.expand();
             }

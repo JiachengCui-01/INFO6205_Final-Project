@@ -36,6 +36,29 @@ public class MergeNode implements Node<MergeGame> {
         return children;
     }    
 
+    public MergeMove bestMove() {
+        MergeMove best = null;
+        int maxPlayouts = -1;
+    
+        for (Map.Entry<Move<MergeGame>, Node<MergeGame>> entry : children.entrySet()) {
+            Node<MergeGame> child = entry.getValue();
+            if (child instanceof MergeNode) {
+                int childPlayouts = ((MergeNode) child).getPlayouts();
+                if (childPlayouts > maxPlayouts) {
+                    maxPlayouts = childPlayouts;
+                    best = (MergeMove) entry.getKey();
+                }
+            }
+        }
+    
+        return best;
+    }
+
+    public int getPlayouts() {
+        return playouts;
+    }
+    
+
     @Override
     public State<MergeGame> state() {
         return state;
@@ -53,19 +76,22 @@ public class MergeNode implements Node<MergeGame> {
 
     @Override
     public boolean white() {
-        return true; // 所有节点都可以认为是自己行动（单人游戏）
+        return true; 
     }
 
     @Override
     public void addChild(State<MergeGame> childState) {
-        Node<MergeGame> child = new MergeNode(childState, this);
-        children.put(null, child); // TODO: replace `null` with actual move if needed
-    }
+        MergeMove move = ((MergeState) this.state).getLastMoveTo(childState); 
+        if (move != null) {
+            Node<MergeGame> child = new MergeNode(childState, this);
+            children.put(move, child); 
+        }
+    }    
 
     @Override
     public void backPropagate() {
         this.playouts++;
-        this.wins += 1; // 默认假设每次模拟获得 1 分
+        this.wins += 1; 
     }
 
     @Override
@@ -95,14 +121,48 @@ public class MergeNode implements Node<MergeGame> {
         return parent;
     }
 
-    // Optional: Simulation method
     public int simulate() {
-        State<MergeGame> sim = state;
-        while (!sim.isTerminal()) {
-            Collection<Move<MergeGame>> moves = sim.moves(sim.player());
-            Move<MergeGame> move = moves.iterator().next();
-            sim = sim.next(move);
+        State<MergeGame> current = this.state;
+        Random rand = new Random();
+        int maxDepth = 20;
+        int steps = 0;
+    
+        while (!current.isTerminal() && steps < maxDepth) {
+            List<Move<MergeGame>> moves = new ArrayList<>(current.moves(current.player()));
+            List<Move<MergeGame>> bestMoves = new ArrayList<>();
+            int simulationsPerMove = 2;
+            int bestUtility = Integer.MIN_VALUE;
+    
+            for (Move<MergeGame> move : moves) {
+                int totalUtility = 0;
+                for (int k = 0; k < simulationsPerMove; k++) {
+                    State<MergeGame> next = current.next(move);
+                    int scoreDelta = ((MergeState) next).getScore() - ((MergeState) current).getScore();
+                    int emptyCells = ((MergeState) next).countEmpty();
+                    int maxTile = ((MergeState) next).getMaxTile();
+                    int logTile = maxTile > 0 ? (int)(Math.log(maxTile) / Math.log(2)) : 0;
+                    int utility = scoreDelta + 15 * emptyCells + 5 * logTile;
+
+                    totalUtility += utility;
+                }
+                int averageUtility = totalUtility / simulationsPerMove;
+            
+                if (averageUtility > bestUtility) {
+                    bestUtility = averageUtility;
+                    bestMoves.clear();
+                    bestMoves.add(move);
+                } else if (averageUtility == bestUtility) {
+                    bestMoves.add(move);
+                }
+            }
+    
+            Move<MergeGame> selected = bestMoves.get(rand.nextInt(bestMoves.size()));
+            current = current.next(selected);
+            steps++;
         }
-        return sim.winner().orElse(0);
+    
+        return ((MergeState) current).getScore();
     }
+    
+    
 }
